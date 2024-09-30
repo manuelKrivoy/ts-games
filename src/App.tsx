@@ -1,116 +1,59 @@
-import { palabras } from "./palabras.js";
-import { useEffect, useState } from "react";
-import FinalScreen from "./ahorcado/FinalScreen";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import Ahorcado from "./Ahorcado";
 
-function App() {
-  const [palabra, setPalabra] = useState<string>("");
-  const [inputValue, setInputValue] = useState<string>("");
-  const [vidas, setVidas] = useState<number>(0);
-  const [letras, setLetras] = useState<string[]>([]);
-  const [usedLetters, setUsedLetters] = useState<string[]>([]);
-
-  const generarPalabra = () => {
-    const randomIndex = Math.floor(Math.random() * palabras.length);
-    const nuevaPalabra = palabras[randomIndex].toUpperCase();
-    setPalabra(nuevaPalabra);
-    setLetras(Array(nuevaPalabra.length).fill("_"));
-    setVidas(6);
-    setUsedLetters([]);
-  };
-
-  useEffect(() => {
-    generarPalabra();
-  }, []);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const letra = inputValue.toUpperCase();
-    if (palabra.includes(letra)) {
-      const newLetras = letras.map((letraPalabra, index) => {
-        if (palabra[index] === letra) {
-          return letra;
-        }
-        return letraPalabra;
-      });
-      setLetras(newLetras);
-    } else {
-      setVidas((prevVidas) => prevVidas - 1);
-      setUsedLetters((prevUsedLetters) => [...prevUsedLetters, letra]);
-    }
-    setInputValue("");
-  };
-
-  const renderVidas = () => {
-    return (
-      <div className="flex justify-center mb-4">
-        <img
-          src={`./img/${vidas}.png`}
-          alt="vidas"
-          className="w-36 h-36 transition-opacity"
-          style={{ opacity: vidas === 0 ? 0 : 1 }} // Para suavizar el cambio
-        />
-      </div>
-    );
-  };
+const App = () => {
+  const miniJuegos = [
+    {
+      name: "Ahorcado",
+      component: Ahorcado,
+      route: "/ahorcado",
+      image:
+        "https://e7.pngegg.com/pngimages/602/272/png-clipart-hangman-ahorcado-hangman-word-guessing-game-hangman-3d-android-game-logo.png",
+    },
+    {
+      name: "Juego 2",
+      component: () => <h1>Juego 2</h1>,
+      route: "/juego2",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzs_J0UfUsoQTZhIcTJpiZGDup5DKiQp6vmA&s",
+    },
+    {
+      name: "Juego 3",
+      component: () => <h1>Juego 3</h1>,
+      route: "/juego3",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzs_J0UfUsoQTZhIcTJpiZGDup5DKiQp6vmA&s",
+    },
+  ];
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
-      <div className="bg-gray-200 p-8 rounded-lg shadow-2xl w-80 max-w-full">
-        {letras.join("") === palabra ? (
-          <FinalScreen text="GANASTE" color="green" palabra={palabra} generarPalabra={generarPalabra} />
-        ) : vidas === 0 ? (
-          <FinalScreen text="PERDISTE" color="red" palabra={palabra} generarPalabra={generarPalabra} />
-        ) : (
-          <>
-            <h1 className="text-gray-800 text-2xl text-center font-bold mb-4">¡Ahorcado!</h1>
-
-            {palabra && (
-              <div>
-                <p className="text-gray-800 text-center font-semibold text-lg mb-4">
-                  {renderVidas()}
-                  {letras.map((letra, index) => (
-                    <span key={index} className="mx-1">
-                      {letra}
-                    </span>
-                  ))}
-                </p>
-
-                {/* Formulario de entrada */}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^[a-zA-ZñÑ]?$/.test(value)) {
-                        setInputValue(value);
-                      }
-                    }}
-                    maxLength={1}
-                    className="w-full border border-gray-300 p-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-                    placeholder="Ingresa una letra"
-                  />
-                  <p>Letras incorrectas: {usedLetters.join(", ")}</p>
-
-                  <button
-                    type="submit"
-                    disabled={!inputValue}
-                    className={`w-full font-bold py-2 rounded-md transition-all duration-300 ease-in-out shadow-lg transform ${
-                      inputValue
-                        ? "bg-blue-500 hover:bg-blue-600 text-white hover:-translate-y-1"
-                        : "bg-gray-400 text-gray-700 cursor-not-allowed"
-                    }`}
-                  >
-                    COMPARAR
-                  </button>
-                </form>
+    <Router>
+      <Routes>
+        {miniJuegos.map((juego, index) => (
+          <Route key={index} path={juego.route} element={<juego.component />} />
+        ))}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <div className="min-h-screen bg-cover bg-center">
+        <div className="bg-gradient-to-b from-blue-400 to-blue-600 min-h-screen flex flex-col items-center justify-center">
+          <h1 className="text-white text-5xl font-bold mb-8 drop-shadow-lg">¡Mini Juegos Divertidos!</h1>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
+            {miniJuegos.map((juego, index) => (
+              <div
+                key={index}
+                className="bg-yellow-300 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:rotate-2 duration-300"
+                style={{
+                  backgroundImage: `url(${juego.image})`,
+                  backgroundSize: "contain", // Asegura que la imagen se ajuste sin recortarse
+                  backgroundRepeat: "no-repeat",
+                }}
+              >
+                <Link to={juego.route} className="block p-8 text-center"></Link>
               </div>
-            )}
-          </>
-        )}
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </Router>
   );
-}
+};
 
 export default App;
