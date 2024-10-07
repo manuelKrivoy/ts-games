@@ -1,6 +1,7 @@
 .board {
   display: inline-block;
   border: 2px solid #333;
+  background-color: rgb(70, 39, 39);
 }
 
 .row {
@@ -10,7 +11,7 @@
 .cell {
   width: 20px;
   height: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid #796b6b;
 }
 
 .snake {

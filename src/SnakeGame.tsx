@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./SnakeGame.css"; // CSS personalizado
 
 const SnakeGame = () => {
-  const boardSize = 10;
+  const boardSize = 20;
   const initialSnake = [{ x: 2, y: 2 }];
   const [snake, setSnake] = useState(initialSnake);
   const [direction, setDirection] = useState({ x: 1, y: 0 });
