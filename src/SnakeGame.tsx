@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "./SnakeGame.css"; // CSS personalizado
-
+import ReturnButton from "./ReturnButton";
 const SnakeGame = () => {
-  const boardSize = 20;
+  const boardSize = 15;
   const initialSnake = [{ x: 2, y: 2 }];
   const [snake, setSnake] = useState(initialSnake);
   const [direction, setDirection] = useState({ x: 1, y: 0 });
@@ -63,7 +63,7 @@ const SnakeGame = () => {
   // UseEffect para manejar el movimiento y las teclas
   useEffect(() => {
     if (gameOver) return;
-    const intervalId = setInterval(moveSnake, 200);
+    const intervalId = setInterval(moveSnake, 150);
     document.addEventListener("keydown", changeDirection);
     return () => {
       clearInterval(intervalId);
@@ -92,6 +92,7 @@ const SnakeGame = () => {
             ))}
         </div>
       )}
+      <ReturnButton />
     </div>
   );
 };

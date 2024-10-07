@@ -22,7 +22,7 @@ const App = () => {
     {
       name: "Snake",
       component: SnakeGame,
-      route: "/Snake",
+      route: "/snake",
       image: "https://play-lh.googleusercontent.com/S9ZmNx5LYCj7h2IJZb0QqkXAGki6JRaMQ25ycKfrngDkNBA6jk7rM87YcAH1prV_OA",
     },
     {

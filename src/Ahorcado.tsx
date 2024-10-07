@@ -1,7 +1,7 @@
 import { palabras } from "./palabras.js";
 import { useEffect, useState } from "react";
 import FinalScreen from "./ahorcado/FinalScreen.jsx";
-
+import ReturnButton from "./ReturnButton";
 function Ahorcado() {
   const [palabra, setPalabra] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
@@ -109,6 +109,7 @@ function Ahorcado() {
           </>
         )}
       </div>
+      <ReturnButton />
     </div>
   );
 }
