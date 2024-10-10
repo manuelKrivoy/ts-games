@@ -1,21 +1,31 @@
-import { palabras } from "./palabras.js";
 import { useEffect, useState } from "react";
 import FinalScreen from "./ahorcado/FinalScreen.jsx";
 import ReturnButton from "./ReturnButton";
+
 function Ahorcado() {
   const [palabra, setPalabra] = useState<string>("");
   const [inputValue, setInputValue] = useState<string>("");
   const [vidas, setVidas] = useState<number>(0);
   const [letras, setLetras] = useState<string[]>([]);
   const [usedLetters, setUsedLetters] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const generarPalabra = () => {
-    const randomIndex = Math.floor(Math.random() * palabras.length);
-    const nuevaPalabra = palabras[randomIndex].toUpperCase();
-    setPalabra(nuevaPalabra);
-    setLetras(Array(nuevaPalabra.length).fill("_"));
-    setVidas(6);
-    setUsedLetters([]);
+  const generarPalabra = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("https://random-word-api.herokuapp.com/word?lang=es");
+      const data = await response.json();
+      console.log(data);
+      const nuevaPalabra = data[0].toUpperCase();
+      setPalabra(nuevaPalabra);
+      setLetras(Array(nuevaPalabra.length).fill("_"));
+      setVidas(6);
+      setUsedLetters([]);
+    } catch (error) {
+      console.error("Error fetching the word:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -60,14 +70,18 @@ function Ahorcado() {
       </div>
       <div className="flex justify-center items-center flex-grow">
         <div className="bg-gray-200 p-8 rounded-lg shadow-2xl w-80 max-w-full">
-          {letras.join("") === palabra ? (
+          {isLoading ? (
+            <div className="flex items-center justify-center ">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-4 border-b-4 border-blue-500"></div>
+            </div>
+          ) : letras.join("") === palabra ? (
             <FinalScreen text="GANASTE" color="green" palabra={palabra} generarPalabra={generarPalabra} />
           ) : vidas === 0 ? (
             <FinalScreen text="PERDISTE" color="red" palabra={palabra} generarPalabra={generarPalabra} />
           ) : (
             <>
               <h1 className="text-gray-800 text-2xl text-center font-bold mb-4">¡Ahorcado!</h1>
-  
+
               {palabra && (
                 <div>
                   <p className="text-gray-800 text-center font-semibold text-lg mb-4">
@@ -78,7 +92,7 @@ function Ahorcado() {
                       </span>
                     ))}
                   </p>
-  
+
                   {/* Formulario de entrada */}
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <input
@@ -95,7 +109,7 @@ function Ahorcado() {
                       placeholder="Ingresa una letra"
                     />
                     <p>Letras incorrectas: {usedLetters.join(", ")}</p>
-  
+
                     <button
                       type="submit"
                       disabled={!inputValue}
@@ -116,6 +130,6 @@ function Ahorcado() {
       </div>
     </div>
   );
-  }
+}
 
 export default Ahorcado;
