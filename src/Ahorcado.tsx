@@ -15,7 +15,6 @@ function Ahorcado() {
     try {
       const response = await fetch("https://random-word-api.herokuapp.com/word?lang=es");
       const data = await response.json();
-      console.log(data);
       const nuevaPalabra = data[0].toUpperCase();
       setPalabra(nuevaPalabra);
       setLetras(Array(nuevaPalabra.length).fill("_"));
