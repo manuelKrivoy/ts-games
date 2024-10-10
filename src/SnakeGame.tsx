@@ -72,27 +72,32 @@ const SnakeGame = () => {
   }, [snake, direction, gameOver]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
-      {gameOver ? (
-        <h2>¡Game Over! Presiona F5 para reiniciar.</h2>
-      ) : (
-        <div className="board" style={{ width: `${boardSize * 20}px`, height: `${boardSize * 20}px` }}>
-          {Array(boardSize)
-            .fill()
-            .map((_, row) => (
-              <div key={row} className="row">
-                {Array(boardSize)
-                  .fill()
-                  .map((_, col) => {
-                    const isSnake = snake.some((segment) => segment.x === col && segment.y === row);
-                    const isFood = food.x === col && food.y === row;
-                    return <div key={col} className={`cell ${isSnake ? "snake" : ""} ${isFood ? "food" : ""}`}></div>;
-                  })}
-              </div>
-            ))}
-        </div>
-      )}
-      <ReturnButton />
+    <div className=" min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
+      <div className="w-full justify-start p-4">
+        <ReturnButton />
+      </div>
+
+      <div className="flex justify-center items-center flex-grow">
+        {gameOver ? (
+          <h2 className="text-white text-4xl font-bold mb-8 drop-shadow-lg">¡Game Over! Presiona F5 para reiniciar.</h2>
+        ) : (
+          <div className="board" style={{ width: `${boardSize * 20}px`, height: `${boardSize * 20}px` }}>
+            {Array(boardSize)
+              .fill()
+              .map((_, row) => (
+                <div key={row} className="row">
+                  {Array(boardSize)
+                    .fill()
+                    .map((_, col) => {
+                      const isSnake = snake.some((segment) => segment.x === col && segment.y === row);
+                      const isFood = food.x === col && food.y === row;
+                      return <div key={col} className={`cell ${isSnake ? "snake" : ""} ${isFood ? "food" : ""}`}></div>;
+                    })}
+                </div>
+              ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
