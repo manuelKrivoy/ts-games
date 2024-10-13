@@ -10,13 +10,21 @@ function Ahorcado() {
   const [usedLetters, setUsedLetters] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  function quitarTildes(texto: string): string {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
   const generarPalabra = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("https://random-word-api.herokuapp.com/word?lang=es");
-      const data = await response.json();
-      const nuevaPalabra = data[0].toUpperCase();
-      setPalabra(nuevaPalabra);
+      let nuevaPalabra = "";
+      do {
+        const response = await fetch("https://random-word-api.herokuapp.com/word?lang=es");
+        const data = await response.json();
+        nuevaPalabra = data[0].toUpperCase();
+      } while (nuevaPalabra.includes(" "));
+      const palabraNormalizada = quitarTildes(nuevaPalabra);
+      setPalabra(palabraNormalizada);
       setLetras(Array(nuevaPalabra.length).fill("_"));
       setVidas(6);
       setUsedLetters([]);
