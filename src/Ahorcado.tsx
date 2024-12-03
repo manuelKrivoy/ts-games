@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import FinalScreen from "./ahorcado/FinalScreen.jsx";
-import ReturnButton from "./ReturnButton";
+import FinalScreen from "./ahorcado/FinalScreen.js";
+import ReturnButton from "./ReturnButton.js";
 
 function Ahorcado() {
   const [palabra, setPalabra] = useState<string>("");

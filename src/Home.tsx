@@ -1,5 +1,14 @@
 import { Link } from "react-router-dom";
 
+interface MiniJuego {
+  image: string; // URL de la imagen
+  route: string; // Ruta para el enlace
+}
+
+interface HomeProps {
+  miniJuegos: MiniJuego[];
+}
+
 const Home: React.FC<HomeProps> = ({ miniJuegos }) => {
   return (
     <div>
@@ -15,9 +24,15 @@ const Home: React.FC<HomeProps> = ({ miniJuegos }) => {
                   backgroundImage: `url(${juego.image})`,
                   backgroundSize: "contain",
                   backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
                 }}
               >
-                <Link to={juego.route} className="block p-8 text-center"></Link>
+                <Link
+                  to={juego.route}
+                  className="block p-8 text-center text-black font-bold bg-white bg-opacity-50 rounded-lg"
+                >
+                  Jugar
+                </Link>
               </div>
             ))}
           </div>

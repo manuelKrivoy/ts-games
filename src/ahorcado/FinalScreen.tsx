@@ -1,4 +1,11 @@
-const FinalScreen = ({ text, color, palabra, generarPalabra }) => {
+interface FinalScreenProps {
+  text: string;
+  color: "green" | "red"; // Restringimos a los colores permitidos
+  palabra: string;
+  generarPalabra: () => void;
+}
+
+const FinalScreen: React.FC<FinalScreenProps> = ({ text, color, palabra, generarPalabra }) => {
   const colors = {
     green: "text-green-500",
     red: "text-red-700",

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import "./SnakeGame.css"; // CSS personalizado
 import ReturnButton from "./ReturnButton";
-const SnakeGame = () => {
+
+const SnakeGame: React.FC = () => {
   const boardSize = 15;
   const initialSnake = [{ x: 2, y: 2 }];
   const [snake, setSnake] = useState(initialSnake);
@@ -13,7 +14,7 @@ const SnakeGame = () => {
   const [gameOver, setGameOver] = useState(false);
 
   // Función para cambiar la dirección con las teclas
-  const changeDirection = (e) => {
+  const changeDirection = (e: KeyboardEvent) => {
     switch (e.key) {
       case "ArrowUp":
         if (direction.y === 0) setDirection({ x: 0, y: -1 });
@@ -56,7 +57,7 @@ const SnakeGame = () => {
   };
 
   // Función para verificar colisión con el cuerpo
-  const checkCollision = (head) => {
+  const checkCollision = (head: { x: number; y: number }) => {
     return snake.some((segment) => segment.x === head.x && segment.y === head.y);
   };
 
@@ -64,15 +65,18 @@ const SnakeGame = () => {
   useEffect(() => {
     if (gameOver) return;
     const intervalId = setInterval(moveSnake, 150);
-    document.addEventListener("keydown", changeDirection);
+
+    const handleKeyDown = (e: KeyboardEvent) => changeDirection(e);
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
       clearInterval(intervalId);
-      document.removeEventListener("keydown", changeDirection);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [snake, direction, gameOver]);
 
   return (
-    <div className=" min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
+    <div className="min-h-screen bg-gradient-to-r from-purple-500 to-blue-500">
       <div className="w-full justify-start p-4">
         <ReturnButton />
       </div>
@@ -83,11 +87,11 @@ const SnakeGame = () => {
         ) : (
           <div className="board" style={{ width: `${boardSize * 20}px`, height: `${boardSize * 20}px` }}>
             {Array(boardSize)
-              .fill()
+              .fill(0)
               .map((_, row) => (
                 <div key={row} className="row">
                   {Array(boardSize)
-                    .fill()
+                    .fill(0)
                     .map((_, col) => {
                       const isSnake = snake.some((segment) => segment.x === col && segment.y === row);
                       const isFood = food.x === col && food.y === row;
