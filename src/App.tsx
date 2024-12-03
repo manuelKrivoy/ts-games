@@ -27,8 +27,8 @@ const App = () => {
     },
     {
       name: "Juego 3",
-      component: () => <h1>Juego 3</h1>,
-      route: "/juego3",
+      component: () => <h1>Estamos trabando en más juegos!</h1>,
+      route: "/soon",
       image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzs_J0UfUsoQTZhIcTJpiZGDup5DKiQp6vmA&s",
     },
   ];

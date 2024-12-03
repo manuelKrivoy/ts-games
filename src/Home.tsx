@@ -27,12 +27,7 @@ const Home: React.FC<HomeProps> = ({ miniJuegos }) => {
                   backgroundPosition: "center",
                 }}
               >
-                <Link
-                  to={juego.route}
-                  className="block p-8 text-center text-black font-bold bg-white bg-opacity-50 rounded-lg"
-                >
-                  Jugar
-                </Link>
+                <Link to={juego.route} className="block p-8 text-center text-black font-bold  rounded-lg"></Link>
               </div>
             ))}
           </div>
